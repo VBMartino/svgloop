@@ -133,6 +133,14 @@ describe("render and checks", () => {
     expect(r.width).toBe(64);
     expect(r.png.subarray(1, 4).toString()).toBe("PNG");
   });
+  test("loads fonts only for drawings with <text>, and then text still renders", () => {
+    // Without text, renders must be fast (system fonts are not parsed).
+    const t0 = performance.now();
+    for (let i = 0; i < 20; i++) renderSvg(GOOD_SVG, { size: 128 });
+    expect(performance.now() - t0).toBeLessThan(2000);
+    const withText = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60"><text x="10" y="45" font-size="40" fill="#000">Ag</text></svg>`;
+    expect(checkCanvas(withText).blank).toBe(false);
+  }, 30_000);
   test("spots blank, tiny and cut-off drawings", () => {
     expect(checkCanvas(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"></svg>`).blank).toBe(true);
     expect(checkCanvas(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="5" fill="#000"/></svg>`).problems.join()).toContain("very small");

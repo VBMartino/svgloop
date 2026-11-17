@@ -23,11 +23,20 @@ export interface CanvasCheck {
   problems: string[];
 }
 
+/**
+ * Fonts are only needed for <text>. Loading the system fonts parses every installed font on each render,
+ * which takes seconds on a machine with many fonts (macOS especially), so skip it for drawings without text.
+ */
+function fontOptions(svg: string, fontDirs?: string[]) {
+  const hasText = /<text[\s>]/i.test(svg);
+  return { loadSystemFonts: hasText, fontDirs: hasText ? fontDirs ?? [] : [] };
+}
+
 export function renderSvg(svg: string, opts: RenderOptions): Rendered {
   const r = new Resvg(svg, {
     fitTo: { mode: "width", value: opts.size },
     background: opts.background,
-    font: { loadSystemFonts: true, fontDirs: opts.fontDirs ?? [] },
+    font: fontOptions(svg, opts.fontDirs),
     shapeRendering: 2,
     textRendering: 1,
     imageRendering: opts.pixelated ? 1 : 0,
@@ -39,7 +48,7 @@ export function renderSvg(svg: string, opts: RenderOptions): Rendered {
 /** Cheap pixel checks on a transparent render: blank, tiny, cut off. */
 export function checkCanvas(svg: string, fontDirs?: string[]): CanvasCheck {
   const size = 128;
-  const r = new Resvg(svg, { fitTo: { mode: "width", value: size }, font: { loadSystemFonts: true, fontDirs: fontDirs ?? [] } });
+  const r = new Resvg(svg, { fitTo: { mode: "width", value: size }, font: fontOptions(svg, fontDirs) });
   const img = r.render();
   const { width: w, height: h } = img;
   const px = img.pixels;
