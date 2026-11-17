@@ -1,0 +1,7 @@
+<!-- tags: badge, circle, orbit, tech, network, data, connect -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <circle cx="128" cy="128" r="100" fill="#1F2937"/>
+  <circle cx="128" cy="128" r="62" fill="none" stroke="#0F766E" stroke-width="16"/>
+  <circle cx="128" cy="66" r="18" fill="#F59E0B"/>
+  <circle cx="128" cy="128" r="22" fill="#0F766E"/>
+</svg>

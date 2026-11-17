@@ -1,0 +1,35 @@
+{
+  "coder": {
+    "baseURL": "http://127.0.0.1:8080/v1",
+    "model": "your-model-name",
+    "apiKey": "",
+    "temperature": 0.7,
+    "maxTokens": 4096,
+    "timeoutMs": 600000,
+    "extraBody": { "chat_template_kwargs": { "enable_thinking": false } }
+  },
+  "vision": {
+    "baseURL": "http://127.0.0.1:8080/v1",
+    "model": "your-model-name",
+    "apiKey": "",
+    "temperature": 0.2,
+    "maxTokens": 1024,
+    "extraBody": { "chat_template_kwargs": { "enable_thinking": false } }
+  },
+  "palette": [
+    { "name": "ink", "value": "#1F2937", "dark": "#E5E7EB" },
+    { "name": "accent", "value": "#0F766E", "dark": "#2DD4BF" },
+    { "name": "warm", "value": "#F59E0B" },
+    { "name": "paper", "value": "#FFFFFF" }
+  ],
+  "strictPalette": false,
+  "outDir": "out",
+  "canvas": 256,
+  "maxElements": 24,
+  "candidates": 3,
+  "rounds": 2,
+  "keep": 2,
+  "goodEnough": 8,
+  "reviewSizes": [32, 256],
+  "exportSizes": [16, 32, 64, 128, 256, 512]
+}

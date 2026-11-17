@@ -1,0 +1,35 @@
+# dependencies (bun install)
+node_modules
+
+# build and run output
+out
+dist
+*.tgz
+
+# your own settings and private packaging (never published)
+local/
+svgloop.config.json
+
+# code coverage
+coverage
+*.lcov
+
+# logs
+logs
+_.log
+*.log
+
+# dotenv environment variable files
+.env
+.env.*
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# editors and OS
+.idea
+.vscode/
+.DS_Store
+Thumbs.db

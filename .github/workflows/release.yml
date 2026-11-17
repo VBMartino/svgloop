@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows-x64
+            exe: svgloop.exe
+          - os: ubuntu-latest
+            target: linux-x64
+            exe: svgloop
+          - os: macos-latest
+            target: macos-arm64
+            exe: svgloop
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun run build:exe
+      - name: Assemble the folder
+        shell: bash
+        run: |
+          name="svgloop-${GITHUB_REF_NAME}-${{ matrix.target }}"
+          mkdir -p "pkg/$name/examples"
+          cp "dist/${{ matrix.exe }}" "pkg/$name/"
+          cp examples/*.svg "pkg/$name/examples/"
+          cp style.md svgloop.config.example.json README.md LICENSE NOTICE THIRD_PARTY_NOTICES.md CHANGELOG.md "pkg/$name/"
+          echo "name=$name" >> "$GITHUB_ENV"
+      - name: Zip (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path "pkg/$env:name" -DestinationPath "pkg/$env:name.zip"
+      - name: Tar (Linux, macOS)
+        if: runner.os != 'Windows'
+        run: tar -czf "pkg/$name.tar.gz" -C pkg "$name"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.name }}
+          path: pkg/${{ env.name }}.*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: assets
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: assets/*
+          generate_release_notes: true

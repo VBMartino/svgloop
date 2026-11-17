@@ -1,0 +1,6 @@
+- Geometric construction: marks built from circles, rounded rectangles and clean arcs that share centres and a grid.
+- Soft, friendly geometry: generous corner radii, rounded stroke caps, no sharp spikes unless the idea needs them.
+- One clear idea per mark. Prefer negative space and overlap to added detail.
+- Two colours, three at most. A dark ink shape with one accent reads best.
+- Consistent weights: every stroke the same width, every gap the same size.
+- No clip-art, no literal pictograms of the product, no gradients unless asked.
